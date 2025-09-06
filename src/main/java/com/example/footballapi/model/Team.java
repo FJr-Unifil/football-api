@@ -17,10 +17,10 @@ public class Team {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "stadium_name",nullable = false)
     private String stadiumName;
 
-    @Column(nullable = false)
+    @Column(name = "stadium_capacity", nullable = false)
     private int stadiumCapacity;
 
     @Column(nullable = false)
@@ -41,4 +41,6 @@ public class Team {
 
     @Column(name = "created_at")
     private LocalDate createdAt = LocalDate.now();
+
+    private int playerCount;
 }

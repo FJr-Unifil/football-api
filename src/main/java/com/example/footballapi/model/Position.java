@@ -1,4 +1,4 @@
-package com.example.footballapi;
+package com.example.footballapi.model;
 
 public enum Position {
     GOLEIRO,

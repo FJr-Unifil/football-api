@@ -1,0 +1,15 @@
+services:
+  dev_db:
+    image: postgres:15-alpine
+    container_name: football-api-dev-db
+    environment:
+      - POSTGRES_USER=${DATABASE_USER_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_USER_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    volumes:
+      - football-api-dev_db_data:/var/lib/postgresql/data
+
+volumes:
+  football-api-dev_db_data:

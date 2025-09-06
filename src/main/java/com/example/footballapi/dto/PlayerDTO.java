@@ -1,6 +1,6 @@
 package com.example.footballapi.dto;
 
-import com.example.footballapi.Position;
+import com.example.footballapi.model.Position;
 
 public record PlayerDTO(
         String name,

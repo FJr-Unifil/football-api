@@ -19,8 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DatabaseAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 

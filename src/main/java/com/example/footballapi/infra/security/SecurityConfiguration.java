@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -21,16 +19,13 @@ public class SecurityConfiguration {
 
     private final SecurityFilter securityFilter;
 
-    @Bean
-    public DatabaseAuthenticationProvider databaseAuthenticationProvider() {
-        return new DatabaseAuthenticationProvider(passwordEncoder());
-    }
+    private final DatabaseAuthenticationProvider databaseAuthenticationProvider;
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 
-        authBuilder.authenticationProvider(databaseAuthenticationProvider());
+        authBuilder.authenticationProvider(databaseAuthenticationProvider);
 
         return authBuilder.build();
     }
@@ -48,8 +43,4 @@ public class SecurityConfiguration {
                 .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

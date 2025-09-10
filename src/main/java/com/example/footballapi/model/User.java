@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @JoinColumn(name = "team_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "team_id", referencedColumnName = "id", nullable = true)
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Team team;
 
@@ -39,11 +39,10 @@ public class User implements UserDetails {
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
-    public User(String username, String email, String password, Team team) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.team = team;
     }
 
     @Override

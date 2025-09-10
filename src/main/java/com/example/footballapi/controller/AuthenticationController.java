@@ -2,7 +2,7 @@ package com.example.footballapi.controller;
 
 import com.example.footballapi.dto.LoginRequestDTO;
 import com.example.footballapi.dto.LoginResponseDTO;
-import com.example.footballapi.dto.UserDTO;
+import com.example.footballapi.dto.UserRegisterDTO;
 import com.example.footballapi.model.User;
 import com.example.footballapi.service.TokenService;
 import com.example.footballapi.service.UserService;
@@ -38,7 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody UserDTO data) {
+    public ResponseEntity<Void> register(@RequestBody UserRegisterDTO data) {
         userService.createUser(data);
 
         return ResponseEntity.status(201).build();

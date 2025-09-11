@@ -1,5 +1,6 @@
 package com.example.footballapi.model;
 
+import com.example.footballapi.dto.UserRequestDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,8 @@ import java.util.Collections;
 public class User implements UserDetails {
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -29,9 +31,18 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @JoinColumn(name = "team_id", referencedColumnName = "id", nullable = true)
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Team team;
+   @Column(nullable = false)
+   private Integer age;
+
+   @Column(nullable = false)
+   @Enumerated(EnumType.STRING)
+   private Gender gender;
+
+   @Column(nullable = false)
+   private String city;
+
+   @Column(nullable = false)
+   private String favoriteTeamName;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -39,15 +50,23 @@ public class User implements UserDetails {
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public User(UserRequestDTO data) {
+        this.username = data.username();
+        this.email = data.email();
+        this.password = data.password();
+        this.age = data.age();
+        this.gender = data.gender();
+        this.city = data.city();
+        this.favoriteTeamName = data.favoriteTeamName();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public String getUserRealUsername() {
+        return "@" + this.username;
     }
 
     @Override

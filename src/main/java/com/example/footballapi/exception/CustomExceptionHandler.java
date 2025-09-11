@@ -1,6 +1,7 @@
 package com.example.footballapi.exception;
 
 import com.example.footballapi.dto.ExceptionDTO;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,9 +21,9 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    private ResponseEntity<ExceptionDTO> handleException(Exception exception) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+    @ExceptionHandler({ConstraintViolationException.class, MethodArgumentNotValidException.class})
+    private ResponseEntity<ExceptionDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 new ExceptionDTO(
                         exception.getClass().getSimpleName(),
                         exception.getMessage(),
@@ -60,6 +62,17 @@ public class CustomExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     private ResponseEntity<ExceptionDTO> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ExceptionDTO(
+                        exception.getClass().getSimpleName(),
+                        exception.getMessage(),
+                        LocalDateTime.now()
+                )
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    private ResponseEntity<ExceptionDTO> handleException(Exception exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 new ExceptionDTO(
                         exception.getClass().getSimpleName(),
                         exception.getMessage(),

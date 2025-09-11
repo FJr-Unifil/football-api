@@ -6,6 +6,7 @@ import com.example.footballapi.dto.UserRequestDTO;
 import com.example.footballapi.model.User;
 import com.example.footballapi.service.TokenService;
 import com.example.footballapi.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("entrar")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO data) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO data) {
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
 
@@ -39,7 +40,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("registrar")
-    public ResponseEntity<Void> register(@RequestBody UserRequestDTO data) {
+    public ResponseEntity<Void> register(@Valid @RequestBody UserRequestDTO data) {
         userService.createUser(data);
 
         return ResponseEntity.status(201).build();

@@ -4,6 +4,7 @@ import com.example.footballapi.dto.UserRequestDTO;
 import com.example.footballapi.dto.UserResponseDTO;
 import com.example.footballapi.model.User;
 import com.example.footballapi.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateUser(@AuthenticationPrincipal User user, @RequestBody UserRequestDTO data) {
+    public ResponseEntity<Void> updateUser(@AuthenticationPrincipal User user, @Valid @RequestBody UserRequestDTO data) {
         userService.updateUser(user, data);
 
         return ResponseEntity.noContent().build();

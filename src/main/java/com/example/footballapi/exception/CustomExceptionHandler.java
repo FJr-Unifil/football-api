@@ -5,6 +5,7 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -21,8 +22,12 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler({ConstraintViolationException.class, MethodArgumentNotValidException.class})
-    private ResponseEntity<ExceptionDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    @ExceptionHandler({
+            ConstraintViolationException.class,
+            HttpMessageNotReadableException.class,
+            MethodArgumentNotValidException.class
+    })
+    private ResponseEntity<ExceptionDTO> handleMethodArgumentNotValidException(Exception exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 new ExceptionDTO(
                         exception.getClass().getSimpleName(),
